@@ -89,3 +89,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+assets:
+  - images/background_recover.png
+  - images/background_register.png
+  - images/background.png
+  - images/facebook_logo.png
+  - images/google_logo.png
+  - images/user-picture.png
