@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_app/pages/home.page.dart';
+import 'package:flutter_mobile_app/pages/perfil.page.dart';
 import 'package:flutter_mobile_app/pages/reset-password.page.dart';
 import 'package:flutter_mobile_app/pages/signup.page.dart';
 
@@ -38,16 +38,16 @@ class _LoginPageState extends State<LoginPage> {
                     shrinkWrap: true,
                     children: <Widget>[
                       Container(
-                        height: 60,
+                        height: 50,
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black,
+                            color: Colors.grey.shade300,
                             width: 1.0,
                           ),
                           color: Colors.white,
                           borderRadius: BorderRadius.all(
-                            Radius.circular(20),
+                            Radius.circular(10),
                           ),
                         ),
                         child: SizedBox.expand(
@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  margin: EdgeInsets.only(right: 30),
+                                  margin: EdgeInsets.only(right: 20),
                                   child: SizedBox(
                                     child:
                                         Image.asset("images/google_logo.png"),
@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 Text(
-                                  "Login com Google",
+                                  "Continuar com Google",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black38,
@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomePage(),
+                          builder: (context) => PerfilPage(),
                         ),
                       ); */
                             },
@@ -89,16 +89,16 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 15),
                       Container(
-                        height: 60,
+                        height: 50,
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black,
+                            color: Colors.grey.shade300,
                             width: 1.0,
                           ),
                           color: Colors.white,
                           borderRadius: BorderRadius.all(
-                            Radius.circular(20),
+                            Radius.circular(10),
                           ),
                         ),
                         child: SizedBox.expand(
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  margin: EdgeInsets.only(right: 30),
+                                  margin: EdgeInsets.only(right: 20),
                                   child: SizedBox(
                                     child:
                                         Image.asset("images/facebook_logo.png"),
@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 Text(
-                                  "Login com Facebook",
+                                  "Continuar com Facebook",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black38,
@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 40),
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
@@ -169,6 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         style: TextStyle(fontSize: 20),
                       ),
+                      SizedBox(height: 2),
                       Container(
                         height: 40,
                         alignment: Alignment.centerLeft,
@@ -197,12 +198,12 @@ class _LoginPageState extends State<LoginPage> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black,
+                            color: Colors.grey.shade300,
                             width: 1.0,
                           ),
                           color: Colors.deepOrange,
                           borderRadius: BorderRadius.all(
-                            Radius.circular(20),
+                            Radius.circular(10),
                           ),
                         ),
                         child: TextButton(
@@ -224,21 +225,21 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomePage(),
+                                builder: (context) => PerfilPage(),
                               ),
                             );
                           },
                         ),
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 20),
                       Container(
                         height: 40,
                         child: TextButton(
                           child: Text(
-                            "Cadastre-se",
+                            "Ainda não tem conta? \nCadastre-se agora",
                             style: TextStyle(
                               color: Colors.deepOrange,
-                              fontSize: 15,
+                              fontSize: 14.5,
                             ),
                             textAlign: TextAlign.center,
                           ),
