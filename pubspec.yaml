@@ -96,4 +96,9 @@ assets:
   - images/background.png
   - images/facebook_logo.png
   - images/google_logo.png
+  - images/image_prato.png
+  - images/strogonoff-frango.png
   - images/user-picture.png
+
+theme:
+  - theme/image_theme.png
