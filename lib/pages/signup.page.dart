@@ -51,7 +51,6 @@ class _SignupPageState extends State<SignupPage> {
         child: Center(
           child: Container(
             width: 350,
-            height: 510,
             child: Card(
               elevation: 8,
               shape: RoundedRectangleBorder(
@@ -64,6 +63,7 @@ class _SignupPageState extends State<SignupPage> {
                   child: Form(
                     key: _formKey,
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         SizedBox(
                           height: 20,
