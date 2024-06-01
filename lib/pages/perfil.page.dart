@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobile_app/pages/config.page.dart';
 import 'package:flutter_mobile_app/pages/login.page.dart';
 import 'package:flutter_mobile_app/pages/receita.page.dart';
+import 'package:flutter_mobile_app/pages/search.page.dart';
 
 class PerfilPage extends StatefulWidget {
+  final int initialTab;
+
+  PerfilPage({this.initialTab = 0});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -49,14 +54,12 @@ class _HomePageState extends State<PerfilPage>
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search, color: Colors.grey),
-            onPressed: () => {},
+            onPressed: () {
+              showSearch(context: context, delegate: SearchPage());
+            },
           ),
           IconButton(
             icon: Icon(Icons.history, color: Colors.grey),
-            onPressed: () => {},
-          ),
-          IconButton(
-            icon: Icon(Icons.help, color: Colors.grey),
             onPressed: () => {},
           ),
         ],

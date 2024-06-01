@@ -84,7 +84,7 @@ class _ConfigPageState extends State<ConfigPage> {
             controller: _newPasswordController,
             obscureText: !_newPasswordVisible,
             decoration: InputDecoration(
-              labelText: "Senha",
+              labelText: "Senha atual",
               labelStyle: TextStyle(
                 color: Colors.black38,
                 fontWeight: FontWeight.w400,
@@ -108,7 +108,7 @@ class _ConfigPageState extends State<ConfigPage> {
             controller: _confirmPasswordController,
             obscureText: !_confirmPasswordVisible,
             decoration: InputDecoration(
-              labelText: "Confirmar Senha",
+              labelText: "Nova senha",
               labelStyle: TextStyle(
                 color: Colors.black38,
                 fontWeight: FontWeight.w400,
@@ -176,14 +176,16 @@ class _ConfigPageState extends State<ConfigPage> {
       children: [
         SizedBox(height: 100),
         ElevatedButton(
-          onPressed: () => _showDeleteAccountDialog(),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            )),
             minimumSize: Size(double.infinity,
                 50), // Ocupa toda a largura disponível e tem altura de 50 pixels
           ),
+          onPressed: () => _showDeleteAccountDialog(),
           child: Text(
             'Deletar conta',
             style: TextStyle(

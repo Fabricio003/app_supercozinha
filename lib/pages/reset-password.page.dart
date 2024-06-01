@@ -74,12 +74,12 @@ class ResetPasswordPage extends StatelessWidget {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Colors.black,
+                                color: Colors.grey.shade300,
                                 width: 1.0,
                               ),
                               color: Colors.deepOrange,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(20),
+                                Radius.circular(10),
                               ),
                             ),
                             child: TextButton(
@@ -106,20 +106,20 @@ class ResetPasswordPage extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Container(
-                          height: 40,
-                          alignment: Alignment.center,
-                          child: TextButton(
-                            child: Text(
-                              "Cancelar",
-                              style: TextStyle(
-                                color: Colors.deepOrange,
-                                fontSize: 15,
+                            height: 40,
+                            alignment: Alignment.center,
+                            child: TextButton(
+                              child: Text(
+                                "Cancelar",
+                                style: TextStyle(
+                                  color: Colors.deepOrange,
+                                  fontSize: 15,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
+                              onPressed: () => Navigator.pop(context, false),
                             ),
-                            onPressed: () => Navigator.pop(context, false),
                           ),
-                        ),
                         ],
                       ),
                     ),

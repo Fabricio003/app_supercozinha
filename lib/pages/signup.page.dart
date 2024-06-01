@@ -65,9 +65,6 @@ class _SignupPageState extends State<SignupPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        SizedBox(
-                          height: 20,
-                        ),
                         TextFormField(
                           controller: _nameController,
                           keyboardType: TextInputType.text,
@@ -169,20 +166,18 @@ class _SignupPageState extends State<SignupPage> {
                             return _validatePasswords(value);
                           },
                         ),
-                        SizedBox(
-                          height: 30,
-                        ),
+                        SizedBox(height: 40),
                         Container(
                           height: 50,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: Colors.black,
+                              color: Colors.grey.shade300,
                               width: 1.0,
                             ),
                             color: Colors.deepOrange,
                             borderRadius: BorderRadius.all(
-                              Radius.circular(20),
+                              Radius.circular(10),
                             ),
                           ),
                           child: TextButton(
@@ -204,7 +199,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ),
                         SizedBox(
-                          height: 40,
+                          height: 25,
                         ),
                         Container(
                           height: 40,

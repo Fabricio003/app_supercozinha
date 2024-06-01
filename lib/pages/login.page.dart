@@ -24,8 +24,8 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.only(top: 10, left: 20, right: 20),
         child: Center(
           child: Container(
-              width: 350, // Defina a largura desejada aqui
-              height: 510, // Defina a altura desejada aqui
+              width: 350,
+              height: 510,
               child: Card(
                 elevation: 8,
                 shape: RoundedRectangleBorder(
