@@ -94,11 +94,23 @@ assets:
   - images/background_recover.png
   - images/background_register.png
   - images/background.png
+  - images/chapeu_chef.png
   - images/facebook_logo.png
   - images/google_logo.png
   - images/image_prato.png
   - images/strogonoff-frango.png
   - images/user-picture.png
+  - google_fonts/
 
 theme:
   - theme/image_theme.png
+
+fonts:
+  - family: Spicy Rice
+    fonts:
+      - asset: assets/fonts/SpicyRice-Regular.ttf
+  - family: Caveat
+    fonts:
+      - asset: assets/fonts/Caveat-Regular.ttf
+
+
