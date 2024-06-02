@@ -1,5 +1,1 @@
-{
-  "database": {
-    "rules": "database.rules.json"
-  }
-}
+{"database":{"rules":"database.rules.json"},"flutter":{"platforms":{"android":{"default":{"projectId":"supercozinha-ada12","appId":"1:110414317276:android:da23da1cd394c4a6fdd619","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"supercozinha-ada12","configurations":{"android":"1:110414317276:android:da23da1cd394c4a6fdd619","ios":"1:110414317276:ios:fa9827a0bab260cafdd619","web":"1:110414317276:web:7dc795fb8b49c380fdd619"}}}}}}
