@@ -1,10 +1,12 @@
-# flutter_mobile_app
+# Projeto de estudos com flutter app mobile
 
-A new Flutter project.
+Meu primeiro projeto com flutter.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Este é um projeto de estudos do curso de Sistemas de Informação.
+
+Este projeto tem a finalidade de app de receitas.
 
 A few resources to get you started if this is your first Flutter project:
 
