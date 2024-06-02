@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_app/services/auth.service.dart';
+import 'package:email_validator/email_validator.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -9,23 +11,57 @@ class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
 
-  void _submitForm() {
+  AuthService _authService = AuthService();
+
+  void _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
-      // Se o formulário for válido, faça o cadastro
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Cadastro realizado com sucesso!')),
-      );
+      try {
+        await _authService.registerUser(
+          nome: _nameController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+          confirmPassword: _confirmPasswordController.text,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Cadastro realizado com sucesso!'),
+            backgroundColor: Colors.green,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+          ),
+        );
+      } on Exception catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString().replaceAll('Exception: ', '')),
+            backgroundColor: Colors.red,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+          ),
+        );
+      }
     }
+  }
+
+  String? _validateEmail(String? value) {
+    if (!EmailValidator.validate(value ?? '')) {
+      return 'Por favor, insira um e-mail válido';
+    }
+    return null;
   }
 
   String? _validatePasswords(String? value) {
     if (_passwordController.text != _confirmPasswordController.text) {
       return 'As senhas não coincidem';
+    }
+    if (value != null && value.length < 4) {
+      return 'A senha deve ter pelo menos 4 caracteres';
     }
     return null;
   }
@@ -79,7 +115,8 @@ class _SignupPageState extends State<SignupPage> {
                           style: TextStyle(
                             fontSize: 20,
                           ),
-                          validator: (value) => _validateNotEmpty(value, 'o nome'),
+                          validator: (value) =>
+                              _validateNotEmpty(value, 'o nome'),
                         ),
                         SizedBox(
                           height: 10,
@@ -98,7 +135,8 @@ class _SignupPageState extends State<SignupPage> {
                           style: TextStyle(
                             fontSize: 20,
                           ),
-                          validator: (value) => _validateNotEmpty(value, 'o e-mail'),
+                          validator: (value) =>
+                              _validateNotEmpty(value, 'o e-mail'),
                         ),
                         SizedBox(
                           height: 10,
@@ -128,7 +166,8 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                           ),
                           style: TextStyle(fontSize: 20),
-                          validator: (value) => _validateNotEmpty(value, 'a senha'),
+                          validator: (value) =>
+                              _validateNotEmpty(value, 'a senha'),
                         ),
                         SizedBox(
                           height: 10,
@@ -160,8 +199,11 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           style: TextStyle(fontSize: 20),
                           validator: (value) {
-                            if (_validateNotEmpty(value, 'a confirmação de senha') != null) {
-                              return _validateNotEmpty(value, 'a confirmação de senha');
+                            if (_validateNotEmpty(
+                                    value, 'a confirmação de senha') !=
+                                null) {
+                              return _validateNotEmpty(
+                                  value, 'a confirmação de senha');
                             }
                             return _validatePasswords(value);
                           },

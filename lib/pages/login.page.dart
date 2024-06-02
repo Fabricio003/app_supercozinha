@@ -11,6 +11,17 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Limpa os controllers quando o widget é removido
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,6 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 40),
                       TextFormField(
+                        controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           labelText: "Usuário",
@@ -145,6 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 10),
                       TextFormField(
+                        controller: passwordController,
                         keyboardType: TextInputType.text,
                         obscureText: _obscureText,
                         decoration: InputDecoration(

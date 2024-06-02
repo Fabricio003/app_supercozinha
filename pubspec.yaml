@@ -38,6 +38,8 @@ dependencies:
   firebase_core: ^2.32.0
   get: ^4.6.6
   firebase_auth: ^4.20.0
+  email_validator: ^2.0.1
+  firebase_database: ^10.5.7
 
 dev_dependencies:
   flutter_test:
