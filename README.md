@@ -1,4 +1,4 @@
-# Projeto de estudos com flutter app mobile
+# Projeto de estudos com flutter
 
 Meu primeiro projeto com flutter.
 
