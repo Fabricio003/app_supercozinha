@@ -1,4 +1,6 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_app/pages/perfil.page.dart';
 import 'package:flutter_mobile_app/services/auth.service.dart';
 import 'package:email_validator/email_validator.dart';
 
@@ -28,6 +30,22 @@ class _SignupPageState extends State<SignupPage> {
           password: _passwordController.text,
           confirmPassword: _confirmPasswordController.text,
         );
+
+        DatabaseReference ref = FirebaseDatabase.instance.ref("users");
+
+        await ref.push().set({
+          "nome": _nameController.text,
+          "email": _emailController.text,
+          "senha": _passwordController.text,
+        });
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) =>
+                PerfilPage(initialTab: 0, userName: _nameController.text),
+          ),
+        );
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Cadastro realizado com sucesso!'),

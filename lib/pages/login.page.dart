@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobile_app/pages/perfil.page.dart';
 import 'package:flutter_mobile_app/pages/reset-password.page.dart';
 import 'package:flutter_mobile_app/pages/signup.page.dart';
+import 'package:flutter_mobile_app/services/auth.service.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,14 +10,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final AuthService _authService = AuthService();
   bool _obscureText = true;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
-    // Limpa os controllers quando o widget é removido
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -86,15 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ],
                             ),
-                            onPressed: () {
-                              /* 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PerfilPage(),
-                        ),
-                      ); */
-                            },
+                            onPressed: () {},
                           ),
                         ),
                       ),
@@ -146,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                          labelText: "Usuário",
+                          labelText: "E-mail",
                           labelStyle: TextStyle(
                             color: Colors.black38,
                             fontWeight: FontWeight.w400,
@@ -234,13 +232,34 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ],
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PerfilPage(),
-                              ),
-                            );
+                          onPressed: () async {
+                            try {
+                              await _authService.loginUser(
+                                emailController.text,
+                                passwordController.text,
+                              );
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => PerfilPage(
+                                      userName: _authService
+                                              .getCurrentUser()
+                                              ?.displayName ??
+                                          "Usuário"),
+                                ),
+                              );
+                            } on Exception catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(e
+                                      .toString()
+                                      .replaceAll('Exception: ', '')),
+                                  backgroundColor: Colors.red,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(15))),
+                                ),
+                              );
+                            }
                           },
                         ),
                       ),
