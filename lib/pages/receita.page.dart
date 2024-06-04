@@ -8,6 +8,8 @@ class ReceitaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
         title: Text(
           'Adicionar Receita',
           style: TextStyle(
@@ -23,7 +25,6 @@ class ReceitaPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: Colors.white,
       ),
       backgroundColor: Colors.white,
       body: Padding(
@@ -33,10 +34,10 @@ class ReceitaPage extends StatelessWidget {
           children: [
             const Text(
               'Nome do Prato',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 15),
-            Container( //adiciona a imagem do prato
+            Container(
               width: double.infinity,
               height: 100,
               decoration: BoxDecoration(
@@ -47,13 +48,11 @@ class ReceitaPage extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.add_circle,
                       size: 50, color: Colors.deepOrange),
-                  onPressed: () {
-                    // Adicionar funcionalidade para adicionar imagem
-                  },
+                  onPressed: () {},
                 ),
               ),
             ),
-            SizedBox(height: 18),
+            SizedBox(height: 20),
             const Text(
               'Ingredientes',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -63,10 +62,12 @@ class ReceitaPage extends StatelessWidget {
               maxLines: 4,
               decoration: const InputDecoration(
                 hintText: 'Descreva os ingredientes....',
-                border: OutlineInputBorder(),
+                hintStyle: TextStyle(
+                  fontSize: 15.0,
+                ),
               ),
             ),
-            SizedBox(height: 18),
+            SizedBox(height: 20),
             const Text(
               'Modo de Preparo',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -76,10 +77,12 @@ class ReceitaPage extends StatelessWidget {
               maxLines: 4,
               decoration: const InputDecoration(
                 hintText: 'Descreva o modo de preparo....',
-                border: OutlineInputBorder(),
+                hintStyle: TextStyle(
+                  fontSize: 15.0,
+                ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Container(
               height: 50,
               alignment: Alignment.center,
@@ -98,7 +101,7 @@ class ReceitaPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "Cadastrar",
+                      "Publicar receita",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -109,10 +112,6 @@ class ReceitaPage extends StatelessWidget {
                   ],
                 ),
                 onPressed: () {
-                  // Aqui você deve incluir a lógica para salvar os dados da receita
-                  // Por exemplo: saveRecipe(recipeName, ingredients, preparation);
-
-                  // Após salvar, redireciona para a página do perfil na aba 'Minhas receitas'
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => PerfilPage(),
                   ));

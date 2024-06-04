@@ -42,12 +42,13 @@ class AuthService {
         password: password,
       );
 
-      final ref = FirebaseDatabase.instance.ref().child('users/${userCredential.user!.uid}');
+      final ref = FirebaseDatabase.instance
+          .ref()
+          .child('users/${userCredential.user!.uid}');
       var snapshot = await ref.get();
       var userName = snapshot.child('nome').value.toString();
 
       return userName;
-
     } on FirebaseAuthException catch (e) {
       throw Exception(getFirebaseAuthError(e.code));
     }
@@ -71,6 +72,43 @@ class AuthService {
         return 'O endereço de e-mail e senha não são válidos.';
       default:
         return 'Erro de Autenticação informe as credenciais válidas';
+    }
+  }
+
+  Future<void> deleteUser() async {
+    User? user = _firebaseAuth.currentUser;
+
+    if (user != null) {
+      DatabaseReference ref = FirebaseDatabase.instance.ref('users/${user.uid}');
+      await ref.remove();
+
+      await user.delete();
+    }
+  }
+
+  Future<void> updatePassword(String newPassword) async {
+    User? user = _firebaseAuth.currentUser;
+
+    if (user != null) {
+      await user.updatePassword(newPassword);
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref('users/${user.uid}');
+      await ref.update({'password': newPassword});
+    }
+  }
+
+  Future<bool> reauthenticate(String currentPassword) async {
+    User? user = _firebaseAuth.currentUser;
+    var cred = EmailAuthProvider.credential(
+      email: user!.email!,
+      password: currentPassword,
+    );
+
+    try {
+      var result = await user.reauthenticateWithCredential(cred);
+      return result.user != null;
+    } catch (e) {
+      return false;
     }
   }
 }

@@ -40,6 +40,7 @@ dependencies:
   email_validator: ^2.0.1
   firebase_database: ^10.5.7
   google_fonts: ^6.2.1
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -109,9 +110,9 @@ theme:
   - theme/image_theme.png
 
 fonts:
-  - family: SpaceyRice
+  - family: Spicy Rice
     fonts:
-      - asset: fonts/SpaceyRice-Regular.ttf
+      - asset: fonts/SpicyRice-Regular.ttf
   - family: Caveat
     fonts:
       - asset: fonts/Caveat-Regular.ttf

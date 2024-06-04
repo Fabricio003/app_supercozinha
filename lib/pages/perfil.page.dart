@@ -168,7 +168,6 @@ class _HomePageState extends State<PerfilPage>
       children: <Widget>[
         _buildCardItem("Strogonoff de Frango", "images/strogonoff-frango.png",
             "images/user-picture.png"),
-        // Adicione mais itens conforme necessário
       ],
     );
   }
