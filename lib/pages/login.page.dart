@@ -38,108 +38,22 @@ class _LoginPageState extends State<LoginPage> {
             fit: BoxFit.cover,
           ),
         ),
-        padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 10, left: 50, right: 50),
         child: Center(
           child: Container(
-              width: 350,
-              height: 510,
+              width: 360,
+              height: 360,
               child: Card(
-                elevation: 8,
+                elevation: 10,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 color: Colors.white,
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(22),
                   child: ListView(
                     shrinkWrap: true,
                     children: <Widget>[
-                      Container(
-                        height: 50,
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey.shade300,
-                            width: 1.0,
-                          ),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        child: SizedBox.expand(
-                          child: TextButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(right: 20),
-                                  child: SizedBox(
-                                    child:
-                                        Image.asset("images/google_logo.png"),
-                                    height: 30,
-                                    width: 30,
-                                  ),
-                                ),
-                                Text(
-                                  "Continuar com Google",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black38,
-                                    fontSize: 18,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      Container(
-                        height: 50,
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey.shade300,
-                            width: 1.0,
-                          ),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        child: SizedBox.expand(
-                          child: TextButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(right: 20),
-                                  child: SizedBox(
-                                    child:
-                                        Image.asset("images/facebook_logo.png"),
-                                    height: 30,
-                                    width: 30,
-                                  ),
-                                ),
-                                Text(
-                                  "Continuar com Facebook",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black38,
-                                    fontSize: 18,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ],
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 40),
                       TextFormField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
