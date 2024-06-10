@@ -79,7 +79,8 @@ class AuthService {
     User? user = _firebaseAuth.currentUser;
 
     if (user != null) {
-      DatabaseReference ref = FirebaseDatabase.instance.ref('users/${user.uid}');
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref('users/${user.uid}');
       await ref.remove();
 
       await user.delete();
@@ -91,9 +92,6 @@ class AuthService {
 
     if (user != null) {
       await user.updatePassword(newPassword);
-      DatabaseReference ref =
-          FirebaseDatabase.instance.ref('users/${user.uid}');
-      await ref.update({'password': newPassword});
     }
   }
 
@@ -110,5 +108,27 @@ class AuthService {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<void> updateProfilePicture(String imageUrl) async {
+    User? user = _firebaseAuth.currentUser;
+
+    if (user != null) {
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref('users/${user.uid}');
+      await ref.update({'profile_picture': imageUrl});
+    }
+  }
+
+  Future<String?> getProfilePicture() async {
+    User? user = _firebaseAuth.currentUser;
+
+    if (user != null) {
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref('users/${user.uid}');
+      DataSnapshot snapshot = await ref.child('profile_picture').get();
+      return snapshot.value as String?;
+    }
+    return null;
   }
 }
