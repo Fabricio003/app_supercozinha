@@ -96,15 +96,13 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
 assets:
+  - images/avatar.png
   - images/background_recover.png
   - images/background_register.png
   - images/background.png
   - images/chapeu_chef.png
   - images/facebook_logo.png
   - images/google_logo.png
-  - images/image_prato.png
-  - images/strogonoff-frango.png
-  - images/user-picture.png
   - google_fonts/
 
 theme:
