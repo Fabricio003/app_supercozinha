@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_mobile_app/pages/config.page.dart';
 import 'package:flutter_mobile_app/pages/login.page.dart';
 import 'package:flutter_mobile_app/pages/receita.page.dart';
 import 'package:flutter_mobile_app/pages/search.page.dart';
+import 'package:flutter_mobile_app/services/auth.service.dart';
 
 class PerfilPage extends StatefulWidget {
   final int initialTab;
@@ -11,17 +13,28 @@ class PerfilPage extends StatefulWidget {
   PerfilPage({this.initialTab = 0, this.userName = "Usuário"});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _PerfilPageState createState() => _PerfilPageState();
 }
 
-class _HomePageState extends State<PerfilPage>
+class _PerfilPageState extends State<PerfilPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final FirebaseDatabase _database = FirebaseDatabase.instance;
+  final AuthService _authService = AuthService();
+  String? _imageUrl;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _loadProfilePicture();
+  }
+
+  void _loadProfilePicture() async {
+    String? imageUrl = await _authService.getProfilePicture();
+    setState(() {
+      _imageUrl = imageUrl;
+    });
   }
 
   @override
@@ -85,7 +98,14 @@ class _HomePageState extends State<PerfilPage>
     return Row(
       children: <Widget>[
         CircleAvatar(
-            radius: 40, backgroundImage: AssetImage("images/user-picture.png")),
+            backgroundColor: Colors.white, // Define um fundo branco
+            backgroundImage: _imageUrl != null && _imageUrl!.isNotEmpty
+                ? NetworkImage(_imageUrl!)
+                : null,
+            radius: 40,
+            child: _imageUrl == null || _imageUrl!.isEmpty
+                ? Icon(Icons.person, color: Colors.grey, size: 40)
+                : null),
         SizedBox(width: 18),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

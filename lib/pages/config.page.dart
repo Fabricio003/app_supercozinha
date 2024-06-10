@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_mobile_app/pages/login.page.dart';
 import 'package:flutter_mobile_app/services/auth.service.dart';
+import 'dart:io' show File; // Usado para outras plataformas que não são web
+import 'dart:typed_data'; // Usado para web
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ConfigPage extends StatefulWidget {
   @override
@@ -10,11 +16,25 @@ class ConfigPage extends StatefulWidget {
 class _ConfigPageState extends State<ConfigPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _currentPasswordController = TextEditingController();
+  final TextEditingController _currentPasswordController =
+      TextEditingController();
   final AuthService _authService = AuthService();
-
   bool _newPasswordVisible = false;
   bool _currentPasswordVisible = false;
+  String? _imageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfilePicture();
+  }
+
+  void _loadProfilePicture() async {
+    String? imageUrl = await _authService.getProfilePicture();
+    setState(() {
+      _imageUrl = imageUrl;
+    });
+  }
 
   @override
   void dispose() {
@@ -63,6 +83,38 @@ class _ConfigPageState extends State<ConfigPage> {
     }
   }
 
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      String url;
+      if (kIsWeb) {
+        Uint8List fileBytes = await pickedFile.readAsBytes();
+        final Reference storageReference = FirebaseStorage.instance
+            .ref()
+            .child('profile_pictures/${DateTime.now().millisecondsSinceEpoch}');
+        final UploadTask uploadTask = storageReference.putData(fileBytes);
+        final TaskSnapshot downloadUrl = await uploadTask;
+        url = await downloadUrl.ref.getDownloadURL();
+      } else {
+        final Reference storageReference = FirebaseStorage.instance
+            .ref()
+            .child('profile_pictures/${DateTime.now().millisecondsSinceEpoch}');
+        final UploadTask uploadTask =
+            storageReference.putFile(File(pickedFile.path));
+        final TaskSnapshot downloadUrl = await uploadTask;
+        url = await downloadUrl.ref.getDownloadURL();
+      }
+
+      setState(() {
+        _imageUrl = url;
+      });
+
+      await _authService.updateProfilePicture(url);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,12 +154,18 @@ class _ConfigPageState extends State<ConfigPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleAvatar(
-          backgroundImage: AssetImage('images/user-picture.png'),
+          backgroundColor: Colors.white, // Define um fundo branco
+          backgroundImage: _imageUrl != null && _imageUrl!.isNotEmpty
+              ? NetworkImage(_imageUrl!)
+              : null,
           radius: 40,
+          child: _imageUrl == null || _imageUrl!.isEmpty
+              ? Icon(Icons.person, color: Colors.grey, size: 40)
+              : null,
         ),
         IconButton(
           icon: Icon(Icons.camera_alt, color: Colors.deepOrange),
-          onPressed: () {},
+          onPressed: _pickImage,
         ),
       ],
     );
@@ -214,13 +272,6 @@ class _ConfigPageState extends State<ConfigPage> {
       return 'Por favor, insira a nova senha';
     } else if (value.length < 6) {
       return 'A senha deve ter pelo menos 6 caracteres';
-    }
-    return null;
-  }
-
-  String? _validateNotEmpty(String? value, String fieldName) {
-    if (value == null || value.isEmpty) {
-      return 'Por favor, insira $fieldName';
     }
     return null;
   }
