@@ -62,6 +62,42 @@ class AuthService {
     });
   }
 
+  Future<void> addReceita({
+    required String userId,
+    required String nome,
+    required String ingredientes,
+    required String preparo,
+    required String imageUrl,
+  }) async {
+    final ref =
+        FirebaseDatabase.instance.ref().child('receitas/$userId').push();
+    await ref.set({
+      'nome': nome,
+      'ingredientes': ingredientes,
+      'preparo': preparo,
+      'imageUrl': imageUrl,
+    });
+  }
+
+  Future<void> updateReceita({
+    required String userId,
+    required String receitaId,
+    required Map<String, String> receita,
+  }) async {
+    final ref =
+        FirebaseDatabase.instance.ref().child('receitas/$userId/$receitaId');
+    await ref.update(receita);
+  }
+
+  Future<void> deleteReceita({
+    required String userId,
+    required String receitaId,
+  }) async {
+    final ref =
+        FirebaseDatabase.instance.ref().child('receitas/$userId/$receitaId');
+    await ref.remove();
+  }
+
   String getFirebaseAuthError(String errorCode) {
     switch (errorCode) {
       case 'email-already-in-use':

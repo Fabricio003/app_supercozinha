@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_app/pages/login.page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -52,26 +53,43 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+  Future<String> getImageUrl(String imageName) async {
+    final ref = FirebaseStorage.instance.ref().child('assets/$imageName');
+    return await ref.getDownloadURL();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.deepOrange,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('images/chapeu_chef.png'),
-            SizedBox(height: 20),
-            Text(
-              'SuperCozinha',
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Seja você o maior chef da sua cozinha!',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ],
+        child: FutureBuilder(
+          future: getImageUrl('chapeu_chef.png'),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.network(snapshot.data!),
+                    SizedBox(height: 20),
+                    Text(
+                      'SuperCozinha',
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Seja você o maior chef da sua cozinha!',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text('Erro ao carregar imagem');
+              }
+            }
+            return CircularProgressIndicator();
+          },
         ),
       ),
     );

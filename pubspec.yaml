@@ -42,6 +42,7 @@ dependencies:
   google_fonts: ^6.2.1
   image_picker: ^1.1.2
   firebase_storage: ^11.7.7
+  image: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -97,12 +98,12 @@ flutter:
 
 assets:
   - images/avatar.png
-  - images/background_recover.png
-  - images/background_register.png
-  - images/background.png
+  - images/background_recover.jpg
+  - images/background_register.jpg
+  - images/background.jpg
   - images/chapeu_chef.png
-  - images/facebook_logo.png
-  - images/google_logo.png
+  - images/facebook_logo.jpg
+  - images/google_logo.jpg
   - google_fonts/
 
 theme:
