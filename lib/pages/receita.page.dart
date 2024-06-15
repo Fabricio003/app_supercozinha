@@ -65,12 +65,10 @@ class _ReceitaPageState extends State<ReceitaPage> {
         if (_imageFile != null) {
           String filePath = 'receitas/${user.uid}/${DateTime.now()}.png';
 
-          // Redimensiona a imagem
           File file = File(_imageFile!.path);
           img.Image? image = img.decodeImage(await file.readAsBytes());
           img.Image resized = img.copyResize(image!, width: 500);
 
-          // Converte a imagem redimensionada para Uint8List
           Uint8List pngBytes = Uint8List.fromList(img.encodePng(resized));
 
           await _storage.ref(filePath).putData(pngBytes);
@@ -86,14 +84,12 @@ class _ReceitaPageState extends State<ReceitaPage> {
         };
 
         if (widget.receitaId != null) {
-          // Edit existing receita
           await _authService.updateReceita(
             userId: userId,
             receitaId: widget.receitaId!,
             receita: receita,
           );
         } else {
-          // Add new receita
           await _authService.addReceita(
             userId: userId,
             nome: receita['nome']!,
@@ -151,87 +147,91 @@ class _ReceitaPageState extends State<ReceitaPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  if (_imageFile != null)
-                    Image.file(
-                      File(_imageFile!.path),
-                      width: double.infinity,
-                      height: 200,
-                      fit: BoxFit.cover,
+      body: Container(
+        color: Colors.white,
+        child: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    if (_imageFile != null)
+                      Image.file(
+                        File(_imageFile!.path),
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
+                    if (_uploadedImageUrl != null && _imageFile == null)
+                      Image.network(
+                        _uploadedImageUrl!,
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
+                    TextField(
+                      controller: _dishNameController,
+                      decoration: InputDecoration(
+                        hintText: 'Nome do prato',
+                        hintStyle: TextStyle(fontFamily: 'Roboto'),
+                      ),
                     ),
-                  if (_uploadedImageUrl != null && _imageFile == null)
-                    Image.network(
-                      _uploadedImageUrl!,
-                      width: double.infinity,
-                      height: 200,
-                      fit: BoxFit.cover,
+                    SizedBox(height: 10),
+                    TextField(
+                      controller: _ingredientsController,
+                      decoration: InputDecoration(
+                        hintText: 'Descreva os ingredientes...',
+                        hintStyle: TextStyle(fontFamily: 'Roboto'),
+                      ),
+                      maxLines: 3,
                     ),
-                  TextField(
-                    controller: _dishNameController,
-                    decoration: InputDecoration(
-                      hintText: 'Nome do prato',
-                      hintStyle: TextStyle(fontFamily: 'Roboto'),
+                    SizedBox(height: 10),
+                    TextField(
+                      controller: _preparationController,
+                      decoration: InputDecoration(
+                        hintText: 'Descreva o modo de preparo...',
+                        hintStyle: TextStyle(fontFamily: 'Roboto'),
+                      ),
+                      maxLines: 5,
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: _ingredientsController,
-                    decoration: InputDecoration(
-                      hintText: 'Descreva os ingredientes...',
-                      hintStyle: TextStyle(fontFamily: 'Roboto'),
-                    ),
-                    maxLines: 3,
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: _preparationController,
-                    decoration: InputDecoration(
-                      hintText: 'Descreva o modo de preparo...',
-                      hintStyle: TextStyle(fontFamily: 'Roboto'),
-                    ),
-                    maxLines: 5,
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade50,
-                      shape: RoundedRectangleBorder(
+                    SizedBox(height: 50),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      )),
-                    ),
-                    onPressed: _openCamera,
-                    child: Text(
-                      'Tirar Foto',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 18,
+                            Radius.circular(10),
+                          ),
+                        ),
+                        minimumSize: Size(double.infinity, 50),
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey.shade300,
-                        width: 1.0,
-                      ),
-                      color: Colors.deepOrange,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      onPressed: _openCamera,
+                      child: Text(
+                        'Adicionar Foto',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    child: TextButton(
+                    SizedBox(height: 20),
+                    Container(
+                      height: 50,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                          width: 1.0,
+                        ),
+                        color: Colors.deepOrange,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: TextButton(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -248,11 +248,13 @@ class _ReceitaPageState extends State<ReceitaPage> {
                             ),
                           ],
                         ),
-                        onPressed: _saveReceita),
-                  ),
-                ],
+                        onPressed: _saveReceita,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 }

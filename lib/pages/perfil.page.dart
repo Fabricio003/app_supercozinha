@@ -145,8 +145,6 @@ class _PerfilPageState extends State<PerfilPage>
               icon: Icon(Icons.search, color: Colors.grey),
               onPressed: () =>
                   showSearch(context: context, delegate: SearchPage())),
-          IconButton(
-              icon: Icon(Icons.history, color: Colors.grey), onPressed: () {}),
         ],
       ),
       body: Column(
@@ -184,7 +182,7 @@ class _PerfilPageState extends State<PerfilPage>
     return Row(
       children: <Widget>[
         CircleAvatar(
-            backgroundColor: Colors.white, // Define um fundo branco
+            backgroundColor: Colors.white,
             backgroundImage: _imageUrl != null && _imageUrl!.isNotEmpty
                 ? NetworkImage(_imageUrl!)
                 : null,
@@ -259,7 +257,8 @@ class _PerfilPageState extends State<PerfilPage>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text("Minhas receitas"),
+                Text("Minhas receitas",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
                 SizedBox(width: 8),
                 IconButton(
                   icon: Icon(Icons.add, color: Colors.deepOrange),
