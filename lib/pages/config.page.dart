@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_app/pages/perfil.page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -16,17 +17,22 @@ class ConfigPage extends StatefulWidget {
 class _ConfigPageState extends State<ConfigPage> {
   final AuthService _authService = AuthService();
   String? _imageUrl;
+  String? _userName;
+  TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _loadProfilePicture();
+    _loadProfileInfo();
   }
 
-  void _loadProfilePicture() async {
+  void _loadProfileInfo() async {
     String? imageUrl = await _authService.getProfilePicture();
+    String? userName = await _authService.getUserName();
     setState(() {
       _imageUrl = imageUrl;
+      _userName = userName;
+      _nameController.text = '';
     });
   }
 
@@ -62,6 +68,21 @@ class _ConfigPageState extends State<ConfigPage> {
     }
   }
 
+  Future<void> _updateUserName() async {
+    String newName = _nameController.text.trim();
+    if (newName.isNotEmpty) {
+      await _authService.updateUserName(newName);
+      setState(() {
+        _userName = newName;
+      });
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => PerfilPage(userName: newName),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,6 +109,10 @@ class _ConfigPageState extends State<ConfigPage> {
         child: Column(
           children: <Widget>[
             _buildProfileHeader(),
+            SizedBox(height: 20),
+            _buildNameField(),
+            SizedBox(height: 20),
+            _buildSaveButton(),
             _buildDeleteAccountButton(),
           ],
         ),
@@ -100,7 +125,6 @@ class _ConfigPageState extends State<ConfigPage> {
       children: [
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.deepOrange, width: 2),
             borderRadius: BorderRadius.circular(50),
           ),
           child: CircleAvatar(
@@ -119,7 +143,47 @@ class _ConfigPageState extends State<ConfigPage> {
           icon: Icon(Icons.camera_alt, color: Colors.deepOrange),
           onPressed: _pickImage,
         ),
+        SizedBox(height: 10),
+        Text(
+          _userName ?? 'Usuário',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ],
+    );
+  }
+
+  Widget _buildNameField() {
+    return TextField(
+      controller: _nameController,
+      decoration: InputDecoration(
+        hintText: 'Nome',
+        hintStyle: TextStyle(fontFamily: 'Roboto'),
+      ),
+      maxLines: 1,
+    );
+  }
+
+  Widget _buildSaveButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.deepOrange,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        minimumSize: Size(double.infinity, 50),
+      ),
+      onPressed: _updateUserName,
+      child: Text(
+        'Salvar',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          fontSize: 18,
+        ),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 

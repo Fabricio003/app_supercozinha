@@ -23,21 +23,45 @@ class _PerfilPageState extends State<PerfilPage>
   final FirebaseDatabase _database = FirebaseDatabase.instance;
   final AuthService _authService = AuthService();
   String? _imageUrl;
+  String? _userName;
   List<Map<String, String>> _minhasReceitas = [];
   bool _isLoading = false;
+  late DatabaseReference _profilePictureRef;
+  late DatabaseReference _userNameRef;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 1, vsync: this);
-    _loadProfilePicture();
+    _loadProfileInfo();
     _loadMinhasReceitas();
+
+    User? user = _authService.getCurrentUser();
+    if (user != null) {
+      _profilePictureRef = _database.ref('users/${user.uid}/profile_picture');
+      _profilePictureRef.onValue.listen((event) {
+        final imageUrl = event.snapshot.value as String?;
+        setState(() {
+          _imageUrl = imageUrl;
+        });
+      });
+
+      _userNameRef = _database.ref('users/${user.uid}/nome');
+      _userNameRef.onValue.listen((event) {
+        final userName = event.snapshot.value as String?;
+        setState(() {
+          _userName = userName;
+        });
+      });
+    }
   }
 
-  void _loadProfilePicture() async {
+  void _loadProfileInfo() async {
     String? imageUrl = await _authService.getProfilePicture();
+    String? userName = await _authService.getUserName();
     setState(() {
       _imageUrl = imageUrl;
+      _userName = userName;
     });
   }
 
@@ -96,7 +120,7 @@ class _PerfilPageState extends State<PerfilPage>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Receita deletada com sucesso!'),
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.green,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
         ),
@@ -118,6 +142,7 @@ class _PerfilPageState extends State<PerfilPage>
           },
           receita: receita,
           receitaId: receitaId,
+          profilePictureUrl: _imageUrl,
         ),
       ),
     );
@@ -159,7 +184,7 @@ class _PerfilPageState extends State<PerfilPage>
 
   Widget _buildProfileHeader() {
     String displayName =
-        widget.userName.isNotEmpty ? widget.userName : "Usuário";
+        _userName?.isNotEmpty == true ? _userName! : "Usuário";
     return Container(
       padding: EdgeInsets.all(16),
       color: Colors.white,
@@ -182,14 +207,15 @@ class _PerfilPageState extends State<PerfilPage>
     return Row(
       children: <Widget>[
         CircleAvatar(
-            backgroundColor: Colors.white,
-            backgroundImage: _imageUrl != null && _imageUrl!.isNotEmpty
-                ? NetworkImage(_imageUrl!)
-                : null,
-            radius: 40,
-            child: _imageUrl == null || _imageUrl!.isEmpty
-                ? Icon(Icons.person, color: Colors.grey, size: 40)
-                : null),
+          backgroundColor: Colors.white,
+          backgroundImage: _imageUrl != null && _imageUrl!.isNotEmpty
+              ? NetworkImage(_imageUrl!) as ImageProvider
+              : AssetImage('images/user-picture.png'),
+          radius: 40,
+          child: _imageUrl == null || _imageUrl!.isEmpty
+              ? Icon(Icons.person, color: Colors.grey, size: 40)
+              : null,
+        ),
         SizedBox(width: 18),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,13 +284,16 @@ class _PerfilPageState extends State<PerfilPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text("Minhas receitas",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
                 SizedBox(width: 8),
                 IconButton(
                   icon: Icon(Icons.add, color: Colors.deepOrange),
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ReceitaPage(
                             onRecipePublished: _addReceita,
+                            profilePictureUrl:
+                                _imageUrl,
                           ))),
                 ),
               ],
@@ -306,6 +335,8 @@ class _PerfilPageState extends State<PerfilPage>
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => ReceitaPage(
                         onRecipePublished: _addReceita,
+                        profilePictureUrl:
+                            _imageUrl,
                       ))),
             ),
           ],
@@ -341,7 +372,9 @@ class _PerfilPageState extends State<PerfilPage>
           children: <Widget>[
             ListTile(
               leading: CircleAvatar(
-                  backgroundImage: AssetImage('images/user-picture.png')),
+                  backgroundImage: _imageUrl != null && _imageUrl!.isNotEmpty
+                      ? NetworkImage(_imageUrl!) as ImageProvider
+                      : AssetImage('images/user-picture.png')),
               title: Text(title,
                   style: TextStyle(
                       fontSize: 16.0,
@@ -389,3 +422,4 @@ class _PerfilPageState extends State<PerfilPage>
     );
   }
 }
+
