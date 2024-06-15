@@ -41,18 +41,19 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.only(top: 10, left: 50, right: 50),
         child: Center(
           child: Container(
-              width: 360,
-              height: 360,
-              child: Card(
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                color: Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.all(22),
-                  child: ListView(
-                    shrinkWrap: true,
+            width: 360,
+            height: 360,
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.all(22),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       TextFormField(
                         controller: emailController,
@@ -202,7 +203,9 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-              )),
+              ),
+            ),
+          ),
         ),
       ),
     );
