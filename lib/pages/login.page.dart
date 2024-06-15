@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: Container(
             width: 360,
-            height: 360,
+            height: 380,
             child: Card(
               elevation: 10,
               shape: RoundedRectangleBorder(
