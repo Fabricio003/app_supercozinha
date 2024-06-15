@@ -12,8 +12,9 @@ class ReceitaPage extends StatefulWidget {
   final Function(Map<String, String>) onRecipePublished;
   final Map<String, String>? receita;
   final String? receitaId;
+  final String? profilePictureUrl;
 
-  ReceitaPage({required this.onRecipePublished, this.receita, this.receitaId});
+  ReceitaPage({required this.onRecipePublished, this.receita, this.receitaId, this.profilePictureUrl});
 
   @override
   _ReceitaPageState createState() => _ReceitaPageState();
@@ -35,9 +36,9 @@ class _ReceitaPageState extends State<ReceitaPage> {
   void initState() {
     super.initState();
     if (widget.receita != null) {
-      _dishNameController.text = widget.receita!['nome']!;
-      _ingredientsController.text = widget.receita!['ingredientes']!;
-      _preparationController.text = widget.receita!['preparo']!;
+      _dishNameController.text = widget.receita!['nome'] ?? '';
+      _ingredientsController.text = widget.receita!['ingredientes'] ?? '';
+      _preparationController.text = widget.receita!['preparo'] ?? '';
       _uploadedImageUrl = widget.receita!['imageUrl'];
     }
   }
@@ -74,6 +75,12 @@ class _ReceitaPageState extends State<ReceitaPage> {
           await _storage.ref(filePath).putData(pngBytes);
 
           imageUrl = await _storage.ref(filePath).getDownloadURL();
+        }
+
+        if (_dishNameController.text.isEmpty ||
+            _ingredientsController.text.isEmpty ||
+            _preparationController.text.isEmpty) {
+          throw Exception("Todos os campos devem ser preenchidos.");
         }
 
         final receita = {
@@ -122,7 +129,7 @@ class _ReceitaPageState extends State<ReceitaPage> {
         _isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao salvar a receita.')),
+        SnackBar(content: Text('Erro ao salvar a receita: ${e.toString()}')),
       );
     }
   }
