@@ -123,29 +123,6 @@ class AuthService {
     }
   }
 
-  Future<void> updatePassword(String newPassword) async {
-    User? user = _firebaseAuth.currentUser;
-
-    if (user != null) {
-      await user.updatePassword(newPassword);
-    }
-  }
-
-  Future<bool> reauthenticate(String currentPassword) async {
-    User? user = _firebaseAuth.currentUser;
-    var cred = EmailAuthProvider.credential(
-      email: user!.email!,
-      password: currentPassword,
-    );
-
-    try {
-      var result = await user.reauthenticateWithCredential(cred);
-      return result.user != null;
-    } catch (e) {
-      return false;
-    }
-  }
-
   Future<void> updateProfilePicture(String imageUrl) async {
     User? user = _firebaseAuth.currentUser;
 
@@ -166,5 +143,26 @@ class AuthService {
       return snapshot.value as String?;
     }
     return null;
+  }
+
+  Future<void> resetPassword(String email, String newPassword) async {
+    final ref = FirebaseDatabase.instance.ref().child('users');
+    final query = ref.orderByChild('email').equalTo(email).limitToFirst(1);
+    final snapshot = await query.get();
+
+    if (snapshot.exists) {
+      final userKey = snapshot.children.first.key;
+      if (userKey != null) {
+        final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+            email: email, password: newPassword);
+        final user = userCredential.user;
+        if (user != null) {
+          await user.updatePassword(newPassword);
+          await _firebaseAuth.signOut();
+        }
+      }
+    } else {
+      throw Exception('Usuário não encontrado.');
+    }
   }
 }
